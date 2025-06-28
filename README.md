@@ -53,7 +53,7 @@ This repository contains a Verilog implementation of a traffic light controller 
 
 Below is a sample waveform generated from the simulation, visualized using EPWave:
 
-![Simulation Waveform](https://pplx-res.cloudinary.com/image/private/user_uploads/72695864/75b71448-ea64-450f-a02b-4844e84578a7/image.jpg)
+![Simulation Waveform](Stimulation Waveform.png)
 
 **Signal Description:**
 - `delay_3sec` and `delay_3sec` (duplicated): Show the timing pulse for state transitions.
