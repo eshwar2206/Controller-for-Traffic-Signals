@@ -1,77 +1,78 @@
 # Controller-for-Traffic-Signals
 ## Overview
 
-This project implements a parameterized traffic light controller for a two-way intersection using Verilog. The design uses a finite state machine (FSM) with configurable timing for green, yellow, and red lights. It includes a comprehensive testbench with waveform (VCD) generation for simulation and verification.
+This project implements a simple traffic light controller using a finite state machine (FSM) in Verilog. The design manages two directions (highway and lane) and transitions through green, yellow, and red states based on sensor input and a delay timer.
 
-The project demonstrates best practices in digital circuit design, FSM implementation, and verification, making it an excellent example of hardware design skills using Verilog.
-
+This repository contains a Verilog implementation of a traffic light controller FSM, along with a SystemVerilog testbench for simulation. The FSM controls traffic lights for a highway and a side lane, transitioning states based on a vehicle sensor and a programmable delay
 ## Features
 
-- Parameterized timing for green, yellow, and red light durations  
-- Counter-based state transitions for realistic timing control  
-- Clear state encoding using Verilog parameters  
-- Separation of state transition logic and output logic  
-- Comprehensive testbench with reset, sensor stimulus, and output verification  
-- VCD waveform generation for detailed simulation analysis  
+- FSM-based traffic light control for two directions (highway and lane)
+- Four states: 
+  - Highway Green / Lane Red
+  - Highway Yellow / Lane Red
+  - Highway Red / Lane Green
+  - Highway Red / Lane Yellow
+- Sensor input to detect vehicles on the side lane
+- Programmable delay for yellow and green phases
+- Testbench with simulation stimulus and VCD waveform dump
+- 
+## File Structure
 
-## Repository Structure
-├── traffic_light_fsm.v      # Main FSM module
-
-├── tb_traffic_light_fsm.v   # Testbench for verification
-
-└── README.md                # Project documentation
-
-## Getting Started
-
-### Prerequisites
-
-- Verilog simulator such as Icarus Verilog, ModelSim, or Vivado  
-- GTKWave or any VCD viewer for waveform analysis  
-
-### Running the Simulation
-
- Clone the repository:
-gh repo clone eshwar2206/Controller-for-Traffic-Signals
-
- Open the generated waveform file:
+| File         | Description                              |
+|--------------|------------------------------------------|
+| design.sv    | Verilog module for the traffic light FSM |
+| testbench.sv | SystemVerilog testbench for simulation   |
 
 
- 
-## Design Details
+## How It Works
 
-### FSM States
+- The FSM starts in the "Highway Green / Lane Red" state.
+- If a car is detected on the side lane (`sensor` input), the FSM transitions to "Highway Yellow / Lane Red" after a programmable delay.
+- The FSM continues through the sequence, allowing the lane to go green, then yellow, and finally returning to the default state.
+- State transitions are controlled by the `sensor` and `delay_3sec` inputs.
 
-| State                  | Description                   |
-|------------------------|-------------------------------|
-| `S_HW_GREEN_LANE_RED`  | Highway green, lane red        |
-| `S_HW_YELLOW_LANE_RED` | Highway yellow, lane red       |
-| `S_HW_RED_LANE_GREEN`  | Highway red, lane green        |
-| `S_HW_RED_LANE_YELLOW` | Highway red, lane yellow       |
+### State Encoding
 
-### Parameters
+| State Name                | Encoding |
+|---------------------------|----------|
+| HW_GREEN_LANE_RED         | 3'b000   |
+| HW_YELLOW_LANE_RED        | 3'b001   |
+| HW_RED_LANE_GREEN         | 3'b010   |
+| HW_RED_LANE_YELLOW        | 3'b011   |
 
-- `GREEN_TIME`: Duration of green light (default 20 clock cycles)  
-- `YELLOW_TIME`: Duration of yellow light (default 5 clock cycles)  
-- `RED_TIME`: Duration of red light (default 20 clock cycles)  
+## Simulation Instructions
 
-### Inputs and Outputs
+1. Open both `design.sv` and `testbench.sv` in your Verilog simulator.
+2. Run the simulation.
+3. The testbench will:
+   - Initialize signals
+   - Apply stimulus to simulate cars arriving on the lane
+   - Dump waveforms to `dump.vcd` for viewing in a waveform viewer
 
-| Signal   | Direction | Description                          |
-|----------|-----------|------------------------------------|
-| `clk`    | Input     | System clock                       |
-| `reset`  | Input     | Asynchronous reset                 |
-| `sensor` | Input     | Lane vehicle sensor (1 = detected) |
-| `highway`| Output    | Highway traffic light (2-bit code) |
-| `lane`   | Output    | Lane traffic light (2-bit code)    |
+## Example Waveform Output
 
-## Testbench Features
+Below is a sample waveform generated from the simulation, visualized using EPWave:
 
-- Applies reset and sensor stimuli  
-- Monitors and displays state and output changes  
-- Generates VCD waveform file for detailed inspection  
-- Verifies correct FSM operation under various conditions  
+![Simulation Waveform](https://pplx-res.cloudinary.com/image/private/user_uploads/72695864/75b71448-ea64-450f-a02b-4844e84578a7/image.jpg)
 
+**Signal Description:**
+- `delay_3sec` and `delay_3sec` (duplicated): Show the timing pulse for state transitions.
+- `_clk`: The clock signal driving the FSM.
+- `highway[1:0]`: Output for the highway traffic light (e.g., 2 = green, 1 = yellow, 0 = red).
+- `lane[1:0]`: Output for the lane traffic light (e.g., 2 = green, 1 = yellow, 0 = red).
+- `reset`: System reset signal.
+- `sensor`: Input signal indicating a vehicle is present on the lane.
 
-*This project showcases practical Verilog skills in digital FSM design and verification, suitable for academic portfolios and internship applications.*  
+**Waveform Analysis:**
+- When `sensor` is asserted, the FSM progresses through the states, changing the output of `highway` and `lane` accordingly.
+- The `delay_3sec` signal synchronizes the transition timing for yellow and green phases.
+- The `reset` signal initializes the FSM to its default state.
+- Observe that `highway` and `lane` outputs change in a mutually exclusive pattern, ensuring safe traffic control.
 
+You can view the waveform output using any VCD-compatible viewer (e.g., GTKWave). The signals of interest are:
 
+- `state` (FSM state)
+- `highway` (highway light outputs)
+- `lane` (lane light outputs)
+- `sensor` (vehicle detection)
+- `delay_3sec` (delay timer)
