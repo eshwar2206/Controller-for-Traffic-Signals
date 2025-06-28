@@ -20,8 +20,8 @@ This repository contains a Verilog implementation of a traffic light controller 
 
 | File         | Description                              |
 |--------------|------------------------------------------|
-| design.sv    | Verilog module for the traffic light FSM |
-| testbench.sv | SystemVerilog testbench for simulation   |
+| traffic_light_fsm.sv   | Verilog module for the traffic light FSM |
+| tb_traffic_light_fsm.sv| SystemVerilog testbench for simulation   |
 
 
 ## How It Works
