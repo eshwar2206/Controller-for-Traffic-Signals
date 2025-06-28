@@ -17,7 +17,9 @@ The project demonstrates best practices in digital circuit design, FSM implement
 ## Repository Structure
 .
 ├── traffic_light_fsm.v      # Main FSM module
+
 ├── tb_traffic_light_fsm.v   # Testbench for verification
+
 └── README.md                # Project documentation
 
 ## Getting Started
