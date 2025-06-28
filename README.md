@@ -31,7 +31,7 @@ The project demonstrates best practices in digital circuit design, FSM implement
 ### Running the Simulation
 
  Clone the repository:
-
+gh repo clone eshwar2206/Controller-for-Traffic-Signals
 
  Open the generated waveform file:
 
